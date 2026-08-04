@@ -55,17 +55,16 @@ body {
 
 /* コマンドウィンドウ */
 .command-window {
-
-  position:relative;
-
-top: -50px;
-  z-index:2;
-  width:90%;
-
-  max-width:900px;
-
-  margin-bottom:12vh;
-
+  
+  position: relative;
+  
+  z-index: 2;
+  
+  width: 90%;
+  
+  max-width: 900px;
+  
+  margin-bottom: clamp(20px, 5vh, 60px);
 
   background:#000;
 
