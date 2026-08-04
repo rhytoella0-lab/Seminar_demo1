@@ -45,6 +45,8 @@ const textLoopSE = new Audio("./sounds/text_loop.mp3");
 
 textLoopSE.loop = true;
 
+textLoopSE.preload = "auto";
+
 textLoopSE.volume = 0.9;
 
 function playMoveSE() {
@@ -77,6 +79,8 @@ function playTextSE() {
 
 function startBGM() {
   
+  bgm.volume = 0;
+  
   bgm.play()
     .then(() => {
       
@@ -88,16 +92,20 @@ function startBGM() {
       
       const fadeIn = setInterval(() => {
         
-        volume += 0.01;
         
-        bgm.volume = volume;
+        volume += 0.005;
         
         
         if (volume >= 0.05) {
           
+          volume = 0.05;
           clearInterval(fadeIn);
           
         }
+        
+        
+        bgm.volume = volume;
+        
         
       }, 100);
       
@@ -497,15 +505,24 @@ startMessage.addEventListener("click", () => {
       console.log("スタートSE再生NG");
       console.log(error);
     });
+  
+  
+  // 少し間を空けてBGM開始
+  setTimeout(() => {
+    
     startBGM();
-      
+    
+  }, 300);
+  
+  
   startMessage.style.display = "none";
-
-mainMenu.classList.add("show");
-
-
-setTimeout(() => {
-  keepFocus();
-}, 50);
+  
+  mainMenu.classList.add("show");
+  
+  
+  setTimeout(() => {
+    keepFocus();
+  }, 50);
+  
+  
 });
-
