@@ -41,6 +41,11 @@ textSE.volume = 0.7;
 const moveSE = new Audio("./sounds/text.mp3");
 moveSE.volume = 0.7;
 
+const textLoopSE = new Audio("./sounds/text_loop.mp3");
+
+textLoopSE.loop = true;
+
+textLoopSE.volume = 0.9;
 
 function playMoveSE() {
   
@@ -88,7 +93,7 @@ function startBGM() {
         bgm.volume = volume;
         
         
-        if (volume >= 0.1) {
+        if (volume >= 0.05) {
           
           clearInterval(fadeIn);
           
@@ -114,7 +119,7 @@ const pages = {
     
     title: "我々の経験から",
     
-    text: "ここはやってみたくなるページです。"
+    text: "ここはやってみたくなるようなことを書くページです。"
     
   },
   
@@ -204,19 +209,7 @@ menuItems.forEach((item, index) => {
   
 });
 
-menuItems.forEach((item, index) => {
-  
-  item.addEventListener("pointermove", (event) => {
-    
-    if (event.pointerType === "touch") {
-      return;
-    }
-    
-    changeCursor(index);
-    
-  });
-  
-});
+
 function selectItem(index) {
   
   if (isSelected) {
@@ -379,34 +372,43 @@ function typeWriter(element, text, speed, callback) {
   
   let i = 0;
   
-  const timer = setInterval(() => {
+  
+  textLoopSE.currentTime = 0;
+  
+  textLoopSE.play()
+    .catch(() => {});
   
   
-  // 文字SE
-  
-  playTextSE();
-  
-  
-  // 文字表示
-  
-  element.textContent += text.charAt(i);
-  
-  
-  i++;
-  
-  
-  if (i >= text.length) {
+  setTimeout(() => {
     
-    clearInterval(timer);
     
-    if (callback) {
-      callback();
-    }
+    const timer = setInterval(() => {
+      
+      element.textContent += text.charAt(i);
+      
+      i++;
+      
+      
+      if (i >= text.length) {
+        
+        clearInterval(timer);
+        
+        textLoopSE.pause();
+        
+        textLoopSE.currentTime = 0;
+        
+        if (callback) {
+          callback();
+        }
+        
+      }
+      
+      
+    }, speed);
     
-  }
+    
+  }, 80);
   
-  
-}, speed);
 }
 // =====================
 // 最初のタップ
@@ -447,7 +449,7 @@ title.textContent = pages[page].title;
 typeWriter(
   text,
   pages[page].text,
-  35
+  50
 );
 
 setTimeout(() => {
@@ -506,3 +508,4 @@ setTimeout(() => {
   keepFocus();
 }, 50);
 });
+
